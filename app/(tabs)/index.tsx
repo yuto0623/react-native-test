@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useWindowDimensions } from "react-native";
+import { default as FontAwesome6 } from "react-native-vector-icons/FontAwesome6";
+import { default as MaterialCommunityIcons } from "react-native-vector-icons/MaterialCommunityIcons";
 import { Button, Input, Text, View, XStack, YStack } from "tamagui";
-import Icon from "react-native-vector-icons/FontAwesome6";
 
 export default function TabOneScreen() {
   const [value, setValue] = useState("");
@@ -68,6 +69,34 @@ export default function TabOneScreen() {
     }
   };
 
+  const handleToggleSign = () => {
+    if (value === "" || isError) return;
+
+    try {
+      // 式に演算子が含まれているかチェック
+      const hasOperator = /[+\-×÷]/.test(value);
+
+      if (!hasOperator) {
+        // 単純な数値の場合、符号を反転
+        const num = parseFloat(value);
+        setValue((-num).toString());
+      } else {
+        // 最後の数値を抽出して符号を反転する
+        const lastNumberRegex = /([-+]?[0-9]*\.?[0-9]+)$/;
+        const match = value.match(lastNumberRegex);
+
+        if (match && match[1]) {
+          const lastNumber = parseFloat(match[1]);
+          const toggledNumber = -lastNumber;
+          // 最後の数値を反転した数値に置き換え
+          setValue(value.substring(0, match.index) + toggledNumber);
+        }
+      }
+    } catch {
+      // エラーが発生した場合は何もしない
+    }
+  };
+
   return (
     <YStack
       height={"100%"}
@@ -93,9 +122,16 @@ export default function TabOneScreen() {
               AC
             </Text>
           </Button>
-          <Button flex={1} height={buttonHeight} onPress={() => handleClear()}>
+          <Button
+            flex={1}
+            height={buttonHeight}
+            onPress={() => handleToggleSign()}
+          >
             <Text color="$color" fontSize={buttonFontSize}>
-              AC
+              <MaterialCommunityIcons
+                name="plus-minus-variant"
+                size={buttonFontSize}
+              />
             </Text>
           </Button>
           <Button
@@ -162,7 +198,7 @@ export default function TabOneScreen() {
             onPress={() => handleClearOne()}
           >
             <Text color="$color">
-              <Icon name="delete-left" size={buttonFontSize} />
+              <FontAwesome6 name="delete-left" size={buttonFontSize} />
             </Text>
           </Button>
           <Button
