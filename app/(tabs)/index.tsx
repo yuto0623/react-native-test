@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useWindowDimensions } from "react-native";
 import { Button, Input, Text, View, XStack, YStack } from "tamagui";
+import Icon from "react-native-vector-icons/FontAwesome6";
 
 export default function TabOneScreen() {
   const [value, setValue] = useState("");
@@ -140,15 +141,6 @@ export default function TabOneScreen() {
           <Button
             flex={1}
             height={buttonHeight}
-            onPress={() => handleClearOne()}
-          >
-            <Text color="$color" fontSize={buttonFontSize}>
-              C
-            </Text>
-          </Button>
-          <Button
-            flex={1}
-            height={buttonHeight}
             onPress={() => handleChange(0)}
           >
             <Text color="$color" fontSize={buttonFontSize}>
@@ -167,7 +159,17 @@ export default function TabOneScreen() {
           <Button
             flex={1}
             height={buttonHeight}
+            onPress={() => handleClearOne()}
+          >
+            <Text color="$color">
+              <Icon name="delete-left" size={buttonFontSize} />
+            </Text>
+          </Button>
+          <Button
+            flex={1}
+            height={buttonHeight}
             onPress={() => handleCalculate()}
+            themeInverse
           >
             <Text color="$color" fontSize={buttonFontSize}>
               =
