@@ -23,8 +23,17 @@ export default function TabOneScreen() {
       setValue(text);
       setIsError(false);
     } else {
-      // エラーがない場合は通常通り値を追加
-      setValue(value + text);
+      // 演算子（+、-、×、÷）が連続して入力された場合、最後の演算子を置き換える
+      const operators = ["+", "-", "×", "÷", "%"];
+      const lastChar = value.slice(-1);
+
+      if (operators.includes(text.toString()) && operators.includes(lastChar)) {
+        // 末尾が演算子で、新たに入力されたのも演算子の場合、置き換える
+        setValue(value.slice(0, -1) + text);
+      } else {
+        // それ以外の場合は通常通り値を追加
+        setValue(value + text);
+      }
     }
   };
 
