@@ -75,6 +75,7 @@ export default function TabOneScreen() {
       justifyContent="flex-end"
       alignItems="center"
       gap="$4"
+      backgroundColor="$background"
     >
       <Input
         size="$4"
