@@ -1,6 +1,7 @@
+import { useToastController } from "@tamagui/toast";
 import * as Clipboard from "expo-clipboard";
 import { useState } from "react";
-import { useWindowDimensions } from "react-native";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
 import { default as FontAwesome6 } from "react-native-vector-icons/FontAwesome6";
 import { default as MaterialCommunityIcons } from "react-native-vector-icons/MaterialCommunityIcons";
 import { Button, Input, Text, View, XStack, YStack } from "tamagui";
@@ -13,6 +14,8 @@ export default function CalculatorScreen() {
   const buttonHeight = Math.floor(height * 0.1);
   const inputFontSize = Math.floor(height * 0.04); // 画面高さの4%
   const buttonFontSize = Math.floor(height * 0.023); // 画面高さの2.3%
+
+  const toast = useToastController();
 
   const handleChange = (text: string | number) => {
     if (typeof text === "number") {
@@ -111,9 +114,11 @@ export default function CalculatorScreen() {
       // エラーが発生した場合は何もしない
     }
   };
-
   const copyToClipboard = async (text: string) => {
+    if (!text || isError) return;
+
     await Clipboard.setStringAsync(text);
+    toast.show("コピーしました ");
   };
 
   return (
@@ -126,7 +131,11 @@ export default function CalculatorScreen() {
       gap="$4"
       backgroundColor="$background"
     >
-      <View width="100%" onPress={() => copyToClipboard(value)}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => copyToClipboard(value)}
+        style={{ width: "100%" }}
+      >
         <Input
           size="$4"
           width={"100%"}
@@ -135,7 +144,7 @@ export default function CalculatorScreen() {
           value={value}
           fontSize={inputFontSize}
         />
-      </View>
+      </TouchableOpacity>
       <View width="100%">
         <XStack gap="$2" marginBottom="$2">
           <Button flex={1} height={buttonHeight} onPress={() => handleClear()}>

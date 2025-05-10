@@ -4,6 +4,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { ToastProvider } from "@tamagui/toast";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -30,11 +31,13 @@ export default function RootLayout() {
         config={appConfig}
         defaultTheme={colorScheme === "dark" ? "dark" : "light"}
       >
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
+        <ToastProvider native>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </ToastProvider>
       </TamaguiProvider>
     </ThemeProvider>
   );
