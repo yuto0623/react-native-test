@@ -3,6 +3,7 @@ import { useWindowDimensions } from "react-native";
 import { default as FontAwesome6 } from "react-native-vector-icons/FontAwesome6";
 import { default as MaterialCommunityIcons } from "react-native-vector-icons/MaterialCommunityIcons";
 import { Button, Input, Text, View, XStack, YStack } from "tamagui";
+import * as Clipboard from "expo-clipboard";
 
 export default function CalculatorScreen() {
   const [value, setValue] = useState("");
@@ -111,6 +112,10 @@ export default function CalculatorScreen() {
     }
   };
 
+  const copyToClipboard = async (text: string) => {
+    await Clipboard.setStringAsync(text);
+  };
+
   return (
     <YStack
       height={"100%"}
@@ -128,6 +133,7 @@ export default function CalculatorScreen() {
         readOnly
         value={value}
         fontSize={inputFontSize}
+        onPress={() => copyToClipboard(value)}
       />
       <View width="100%">
         <XStack gap="$2" marginBottom="$2">
