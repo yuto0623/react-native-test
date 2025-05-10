@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useWindowDimensions } from "react-native";
 import { Button, Input, Text, View, XStack, YStack } from "tamagui";
 
 export default function TabOneScreen() {
   const [value, setValue] = useState("");
   const [isError, setIsError] = useState(false);
+  const { height } = useWindowDimensions();
+
+  const buttonHeight = Math.floor(height * 0.1);
 
   const handleChange = (text: string) => {
     setValue(text);
@@ -26,21 +30,29 @@ export default function TabOneScreen() {
 
   return (
     <YStack
-      paddingVertical="$20"
+      height={"100%"}
+      paddingVertical={"$8"}
       paddingHorizontal="$4"
-      justifyContent="center"
+      justifyContent="flex-end"
       alignItems="center"
       gap="$4"
     >
-      <Input size="$4" width={"100%"} readOnly value={value} />
+      <Input
+        size="$4"
+        width={"100%"}
+        height={buttonHeight * 1.8}
+        readOnly
+        value={value}
+        fontSize={40}
+      />
       <View width="100%">
         <XStack gap="$2" marginBottom="$2">
-          <Button flex={1} height={50} onPress={() => handleClear()}>
+          <Button flex={1} height={buttonHeight} onPress={() => handleClear()}>
             <Text color="$color">AC</Text>
           </Button>
           <Button
             flex={1}
-            height={50}
+            height={buttonHeight}
             onPress={() => handleChange(value + "÷")}
           >
             <Text color="$color">÷</Text>
@@ -56,7 +68,7 @@ export default function TabOneScreen() {
               <Button
                 key={i}
                 flex={1}
-                height={50}
+                height={buttonHeight}
                 onPress={() => handleChange(value + i)}
               >
                 <Text color="$color">{i}</Text>
@@ -67,22 +79,30 @@ export default function TabOneScreen() {
         <XStack gap="$2">
           <Button
             flex={1}
-            height={50}
+            height={buttonHeight}
             onPress={() => handleChange(value.slice(0, -1))}
           >
             <Text color="$color">C</Text>
           </Button>
-          <Button flex={1} height={50} onPress={() => handleChange(value + 0)}>
+          <Button
+            flex={1}
+            height={buttonHeight}
+            onPress={() => handleChange(value + 0)}
+          >
             <Text color="$color">0</Text>
           </Button>
           <Button
             flex={1}
-            height={50}
+            height={buttonHeight}
             onPress={() => handleChange(value + ".")}
           >
             <Text color="$color">.</Text>
           </Button>
-          <Button flex={1} height={50} onPress={() => handleCalculate()}>
+          <Button
+            flex={1}
+            height={buttonHeight}
+            onPress={() => handleCalculate()}
+          >
             <Text color="$color">=</Text>
           </Button>
         </XStack>
