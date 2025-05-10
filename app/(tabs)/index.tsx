@@ -8,6 +8,8 @@ export default function TabOneScreen() {
   const { height } = useWindowDimensions();
 
   const buttonHeight = Math.floor(height * 0.1);
+  const inputFontSize = Math.floor(height * 0.04); // 画面高さの4%
+  const buttonFontSize = Math.floor(height * 0.023); // 画面高さの2.3%
 
   const handleChange = (text: string | number) => {
     if (typeof text === "number") {
@@ -80,29 +82,37 @@ export default function TabOneScreen() {
         height={buttonHeight * 1.8}
         readOnly
         value={value}
-        fontSize={40}
+        fontSize={inputFontSize}
       />
       <View width="100%">
         <XStack gap="$2" marginBottom="$2">
           <Button flex={1} height={buttonHeight} onPress={() => handleClear()}>
-            <Text color="$color">AC</Text>
+            <Text color="$color" fontSize={buttonFontSize}>
+              AC
+            </Text>
           </Button>
           <Button flex={1} height={buttonHeight} onPress={() => handleClear()}>
-            <Text color="$color">AC</Text>
+            <Text color="$color" fontSize={buttonFontSize}>
+              AC
+            </Text>
           </Button>
           <Button
             flex={1}
             height={buttonHeight}
             onPress={() => handleChange("%")}
           >
-            <Text color="$color">%</Text>
+            <Text color="$color" fontSize={buttonFontSize}>
+              %
+            </Text>
           </Button>
           <Button
             flex={1}
             height={buttonHeight}
             onPress={() => handleChange("÷")}
           >
-            <Text color="$color">÷</Text>
+            <Text color="$color" fontSize={buttonFontSize}>
+              ÷
+            </Text>
           </Button>
         </XStack>
         {[
@@ -118,7 +128,9 @@ export default function TabOneScreen() {
                 height={buttonHeight}
                 onPress={() => handleChange(i.toString())}
               >
-                <Text color="$color">{i}</Text>
+                <Text color="$color" fontSize={buttonFontSize}>
+                  {i}
+                </Text>
               </Button>
             ))}
           </XStack>
@@ -129,28 +141,36 @@ export default function TabOneScreen() {
             height={buttonHeight}
             onPress={() => handleClearOne()}
           >
-            <Text color="$color">C</Text>
+            <Text color="$color" fontSize={buttonFontSize}>
+              C
+            </Text>
           </Button>
           <Button
             flex={1}
             height={buttonHeight}
             onPress={() => handleChange(0)}
           >
-            <Text color="$color">0</Text>
+            <Text color="$color" fontSize={buttonFontSize}>
+              0
+            </Text>
           </Button>
           <Button
             flex={1}
             height={buttonHeight}
             onPress={() => handleChange(".")}
           >
-            <Text color="$color">.</Text>
+            <Text color="$color" fontSize={buttonFontSize}>
+              .
+            </Text>
           </Button>
           <Button
             flex={1}
             height={buttonHeight}
             onPress={() => handleCalculate()}
           >
-            <Text color="$color">=</Text>
+            <Text color="$color" fontSize={buttonFontSize}>
+              =
+            </Text>
           </Button>
         </XStack>
       </View>
