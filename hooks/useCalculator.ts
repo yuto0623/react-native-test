@@ -37,7 +37,7 @@ export const useCalculator = () => {
       }
     }
   };
-
+  
   // 計算処理
   const handleCalculate = () => {
     if (state.value === "") {
@@ -47,6 +47,16 @@ export const useCalculator = () => {
       setState({ value: "", isError: false });
       return;
     }
+
+    // 最後の文字が演算子かどうかをチェック
+    const lastChar = state.value.slice(-1);
+    const operators = ["+", "-", "×", "÷"];
+    
+    // 最後の文字が%以外の演算子の場合、計算をスキップ
+    if (operators.includes(lastChar)) {
+      return;
+    }
+    
     try {
       // %記号を含む式を処理
       let expression = state.value;

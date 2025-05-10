@@ -1,28 +1,28 @@
-import { useCalculator } from "@/hooks/useCalculator";
 import { memo } from "react";
-import { TouchableOpacity, useWindowDimensions } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Input } from "tamagui";
 
-const Display = () => {
-  const { height } = useWindowDimensions();
-  const { copyToClipboard, value } = useCalculator();
+interface DisplayProps {
+  value: string;
+  height: number;
+  fontSize: number;
+  onPress: () => void;
+}
 
-  const buttonHeight = Math.floor(height * 0.1);
-  const inputFontSize = Math.floor(height * 0.04); // 画面高さの4%
-
+const Display = ({ value, height, fontSize, onPress }: DisplayProps) => {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      onPress={copyToClipboard}
+      onPress={onPress}
       style={{ width: "100%" }}
     >
       <Input
         size="$4"
         width={"100%"}
-        height={buttonHeight * 1.8}
+        height={height}
         readOnly
         value={value}
-        fontSize={inputFontSize}
+        fontSize={fontSize}
       />
     </TouchableOpacity>
   );
