@@ -1,125 +1,25 @@
-import { useToastController } from "@tamagui/toast";
-import * as Clipboard from "expo-clipboard";
-import { useState } from "react";
+import { useCalculator } from "@/hooks/useCalculator";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
 import { default as FontAwesome6 } from "react-native-vector-icons/FontAwesome6";
 import { default as MaterialCommunityIcons } from "react-native-vector-icons/MaterialCommunityIcons";
 import { Button, Input, Text, View, XStack, YStack } from "tamagui";
 
 export default function CalculatorScreen() {
-  const [value, setValue] = useState("");
-  const [isError, setIsError] = useState(false);
   const { height } = useWindowDimensions();
 
   const buttonHeight = Math.floor(height * 0.1);
   const inputFontSize = Math.floor(height * 0.04); // 画面高さの4%
   const buttonFontSize = Math.floor(height * 0.023); // 画面高さの2.3%
 
-  const toast = useToastController();
-
-  const handleChange = (text: string | number) => {
-    if (typeof text === "number") {
-      text = text.toString();
-    }
-
-    // エラー状態の場合、valueをリセットして新しいテキストから始める
-    if (isError) {
-      setValue(text);
-      setIsError(false);
-    } else {
-      // 演算子（+、-、×、÷）が連続して入力された場合、最後の演算子を置き換える
-      const operators = ["+", "-", "×", "÷", "%"];
-      const lastChar = value.slice(-1);
-
-      if (operators.includes(text.toString()) && operators.includes(lastChar)) {
-        // 末尾が演算子で、新たに入力されたのも演算子の場合、置き換える
-        setValue(value.slice(0, -1) + text);
-      } else {
-        // それ以外の場合は通常通り値を追加
-        setValue(value + text);
-      }
-    }
-  };
-
-  const handleCalculate = () => {
-    if (value === "") {
-      return;
-    }
-    if (isError) {
-      setValue("");
-      setIsError(false);
-      return;
-    }
-    try {
-      // %記号を含む式を処理
-      let expression = value;
-
-      // %記号を含む場合、パーセント計算を行う
-      if (expression.includes("%")) {
-        // 数字+%のパターンを見つけて、数字/100に置換する正規表現
-        expression = expression.replace(/(\d+(\.\d+)?)%/g, (match, number) => {
-          return (parseFloat(number) / 100).toString();
-        });
-      }
-
-      // 通常の計算処理
-      const result = eval(expression.replace(/×/g, "*").replace(/÷/g, "/"));
-      setValue(result.toString());
-    } catch {
-      setIsError(true);
-      setValue("Error");
-    }
-  };
-
-  const handleClear = () => {
-    setValue("");
-    setIsError(false);
-  };
-
-  const handleClearOne = () => {
-    if (isError) {
-      setValue("");
-      setIsError(false);
-      return;
-    }
-    if (value.length > 0) {
-      setValue(value.slice(0, -1));
-    }
-  };
-
-  const handleToggleSign = () => {
-    if (value === "" || isError) return;
-
-    try {
-      // 式に演算子が含まれているかチェック
-      const hasOperator = /[+\-×÷]/.test(value);
-
-      if (!hasOperator) {
-        // 単純な数値の場合、符号を反転
-        const num = parseFloat(value);
-        setValue((-num).toString());
-      } else {
-        // 最後の数値を抽出して符号を反転する
-        const lastNumberRegex = /([-+]?[0-9]*\.?[0-9]+)$/;
-        const match = value.match(lastNumberRegex);
-
-        if (match && match[1]) {
-          const lastNumber = parseFloat(match[1]);
-          const toggledNumber = -lastNumber;
-          // 最後の数値を反転した数値に置き換え
-          setValue(value.substring(0, match.index) + toggledNumber);
-        }
-      }
-    } catch {
-      // エラーが発生した場合は何もしない
-    }
-  };
-  const copyToClipboard = async (text: string) => {
-    if (!text || isError) return;
-
-    await Clipboard.setStringAsync(text);
-    toast.show("コピーしました ");
-  };
+  const {
+    handleChange,
+    handleCalculate,
+    handleClear,
+    handleClearOne,
+    handleToggleSign,
+    copyToClipboard,
+    value,
+  } = useCalculator();
 
   return (
     <YStack
@@ -133,7 +33,7 @@ export default function CalculatorScreen() {
     >
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={() => copyToClipboard(value)}
+        onPress={() => copyToClipboard()}
         style={{ width: "100%" }}
       >
         <Input
