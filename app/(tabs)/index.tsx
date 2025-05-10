@@ -64,6 +64,11 @@ export default function TabOneScreen() {
   };
 
   const handleClearOne = () => {
+    if (isError) {
+      setValue("");
+      setIsError(false);
+      return;
+    }
     if (value.length > 0) {
       setValue(value.slice(0, -1));
     }
