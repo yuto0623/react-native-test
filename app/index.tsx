@@ -1,9 +1,9 @@
+import * as Clipboard from "expo-clipboard";
 import { useState } from "react";
 import { useWindowDimensions } from "react-native";
 import { default as FontAwesome6 } from "react-native-vector-icons/FontAwesome6";
 import { default as MaterialCommunityIcons } from "react-native-vector-icons/MaterialCommunityIcons";
 import { Button, Input, Text, View, XStack, YStack } from "tamagui";
-import * as Clipboard from "expo-clipboard";
 
 export default function CalculatorScreen() {
   const [value, setValue] = useState("");
@@ -126,15 +126,16 @@ export default function CalculatorScreen() {
       gap="$4"
       backgroundColor="$background"
     >
-      <Input
-        size="$4"
-        width={"100%"}
-        height={buttonHeight * 1.8}
-        readOnly
-        value={value}
-        fontSize={inputFontSize}
-        onPress={() => copyToClipboard(value)}
-      />
+      <View width="100%" onPress={() => copyToClipboard(value)}>
+        <Input
+          size="$4"
+          width={"100%"}
+          height={buttonHeight * 1.8}
+          readOnly
+          value={value}
+          fontSize={inputFontSize}
+        />
+      </View>
       <View width="100%">
         <XStack gap="$2" marginBottom="$2">
           <Button flex={1} height={buttonHeight} onPress={() => handleClear()}>
