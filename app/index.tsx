@@ -4,7 +4,7 @@ import { default as FontAwesome6 } from "react-native-vector-icons/FontAwesome6"
 import { default as MaterialCommunityIcons } from "react-native-vector-icons/MaterialCommunityIcons";
 import { Button, Input, Text, View, XStack, YStack } from "tamagui";
 
-export default function TabOneScreen() {
+export default function CalculatorScreen() {
   const [value, setValue] = useState("");
   const [isError, setIsError] = useState(false);
   const { height } = useWindowDimensions();
@@ -168,9 +168,9 @@ export default function TabOneScreen() {
           </Button>
         </XStack>
         {[
-          [1, 2, 3, "×"],
+          [7, 8, 9, "×"],
           [4, 5, 6, "-"],
-          [7, 8, 9, "+"],
+          [1, 2, 3, "+"],
         ].map((row, rowIndex) => (
           <XStack key={rowIndex} gap="$2" marginBottom="$2">
             {row.map((i) => (
