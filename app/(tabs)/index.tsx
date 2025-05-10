@@ -9,23 +9,60 @@ export default function TabOneScreen() {
 
   const buttonHeight = Math.floor(height * 0.1);
 
-  const handleChange = (text: string) => {
-    setValue(text);
+  const handleChange = (text: string | number) => {
+    if (typeof text === "number") {
+      text = text.toString();
+    }
+
+    // エラー状態の場合、valueをリセットして新しいテキストから始める
+    if (isError) {
+      setValue(text);
+      setIsError(false);
+    } else {
+      // エラーがない場合は通常通り値を追加
+      setValue(value + text);
+    }
   };
 
   const handleCalculate = () => {
+    if (value === "") {
+      return;
+    }
+    if (isError) {
+      setValue("");
+      setIsError(false);
+      return;
+    }
     try {
-      const result = eval(value.replace(/×/g, "*").replace(/÷/g, "/"));
+      // %記号を含む式を処理
+      let expression = value;
+
+      // %記号を含む場合、パーセント計算を行う
+      if (expression.includes("%")) {
+        // 数字+%のパターンを見つけて、数字/100に置換する正規表現
+        expression = expression.replace(/(\d+(\.\d+)?)%/g, (match, number) => {
+          return (parseFloat(number) / 100).toString();
+        });
+      }
+
+      // 通常の計算処理
+      const result = eval(expression.replace(/×/g, "*").replace(/÷/g, "/"));
       setValue(result.toString());
-    } catch (error) {
+    } catch {
       setIsError(true);
-      setValue("Error" + error);
+      setValue("Error");
     }
   };
 
   const handleClear = () => {
     setValue("");
     setIsError(false);
+  };
+
+  const handleClearOne = () => {
+    if (value.length > 0) {
+      setValue(value.slice(0, -1));
+    }
   };
 
   return (
@@ -50,10 +87,20 @@ export default function TabOneScreen() {
           <Button flex={1} height={buttonHeight} onPress={() => handleClear()}>
             <Text color="$color">AC</Text>
           </Button>
+          <Button flex={1} height={buttonHeight} onPress={() => handleClear()}>
+            <Text color="$color">AC</Text>
+          </Button>
           <Button
             flex={1}
             height={buttonHeight}
-            onPress={() => handleChange(value + "÷")}
+            onPress={() => handleChange("%")}
+          >
+            <Text color="$color">%</Text>
+          </Button>
+          <Button
+            flex={1}
+            height={buttonHeight}
+            onPress={() => handleChange("÷")}
           >
             <Text color="$color">÷</Text>
           </Button>
@@ -69,7 +116,7 @@ export default function TabOneScreen() {
                 key={i}
                 flex={1}
                 height={buttonHeight}
-                onPress={() => handleChange(value + i)}
+                onPress={() => handleChange(i.toString())}
               >
                 <Text color="$color">{i}</Text>
               </Button>
@@ -80,21 +127,21 @@ export default function TabOneScreen() {
           <Button
             flex={1}
             height={buttonHeight}
-            onPress={() => handleChange(value.slice(0, -1))}
+            onPress={() => handleClearOne()}
           >
             <Text color="$color">C</Text>
           </Button>
           <Button
             flex={1}
             height={buttonHeight}
-            onPress={() => handleChange(value + 0)}
+            onPress={() => handleChange(0)}
           >
             <Text color="$color">0</Text>
           </Button>
           <Button
             flex={1}
             height={buttonHeight}
-            onPress={() => handleChange(value + ".")}
+            onPress={() => handleChange(".")}
           >
             <Text color="$color">.</Text>
           </Button>
