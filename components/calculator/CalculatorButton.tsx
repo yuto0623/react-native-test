@@ -1,8 +1,8 @@
 import { memo } from "react";
-import { Button, Text } from "tamagui";
+import { Button, Text, View } from "tamagui";
 
 interface CalculatorButtonProps {
-  label: string | number;
+  label?: string | number;
   onPress: () => void;
   height: number;
   fontSize: number;
@@ -25,9 +25,12 @@ const CalculatorButton = ({
       onPress={onPress}
       {...(isInverse && { themeInverse: true })}
     >
-      <Text color="$color" fontSize={fontSize}>
-        {icon || label}
-      </Text>
+      {icon && <View>{icon}</View>}
+      {label && (
+        <Text color="$color" fontSize={fontSize}>
+          {label}
+        </Text>
+      )}
     </Button>
   );
 };

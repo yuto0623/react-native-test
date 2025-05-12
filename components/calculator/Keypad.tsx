@@ -34,11 +34,11 @@ const Keypad = ({
           fontSize={buttonFontSize}
         />
         <CalculatorButton
-          label=""
           icon={
             <MaterialCommunityIcons
               name="plus-minus-variant"
               size={buttonFontSize}
+              color="$color"
             />
           }
           onPress={onToggleSign}
@@ -91,8 +91,13 @@ const Keypad = ({
           fontSize={buttonFontSize}
         />
         <CalculatorButton
-          label=""
-          icon={<FontAwesome6 name="delete-left" size={buttonFontSize} />}
+          icon={
+            <FontAwesome6
+              name="delete-left"
+              size={buttonFontSize}
+              color="$color"
+            />
+          }
           onPress={onClearOne}
           height={buttonHeight}
           fontSize={buttonFontSize}
